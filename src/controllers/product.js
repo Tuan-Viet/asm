@@ -2,8 +2,8 @@ import Product from "../models/product";
 import joi from 'joi'
 
 const productSchema = joi.object({
-    name: joi.string().validate(),
-    price: joi.number().validate(),
+    name: joi.string().required(),
+    price: joi.number().required(),
     desc: joi.string(),
     status: joi.boolean()
 
@@ -53,6 +53,12 @@ export const get = async (req, res) => {
 }
 export const update = async (req, res) => {
     try {
+        const { error } = productSchema.validate(req.body)
+        if (error) {
+            res.json({
+                message: error.details[0].message,
+            })
+        }
         const product = await Product.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
         return res.status(201).json({
             message: "Them moi thanh cong!",
