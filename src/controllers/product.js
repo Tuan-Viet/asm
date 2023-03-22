@@ -73,7 +73,7 @@ export const update = async (req, res) => {
 }
 export const remove = async (req, res) => {
     try {
-        await Product.findOneAndUpdate({ _id: req.params.id })
+        await Product.findOneAndDelete({ _id: req.params.id })
         return res.status(201).json({
             message: "Xoa thanh cong!"
         })
